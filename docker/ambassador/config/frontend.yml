@@ -1,0 +1,22 @@
+apiVersion: ambassador/v1
+kind:  Mapping
+name:  react
+prefix: /
+service: react:3000
+rewrite: ""
+timeout_ms: 0
+retry_policy:
+  retry_on: "5xx"
+  num_retries: 10
+---
+apiVersion: ambassador/v1
+kind:  Mapping
+name:  p2_php
+prefix: ^\/api\/.*|^/rest_api.*|^//user.*|^//admin.*|^/javascript.*|^/stylesheets.*|^/order_document.*|^\/modules\/.*\.js.*|^\/product\/attachment.*|^\/product\/video\/.*|^/module/upgrade_all.*|^/public/.*|^/images/.*|^/rga/pdf/.*|^/payment.*|^/feed/generate/.*
+prefix_regex: true
+service: p2_php
+timeout_ms: 0
+rewrite: ""
+retry_policy:
+  retry_on: "5xx"
+  num_retries: 10

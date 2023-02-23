@@ -1,0 +1,22 @@
+---
+apiVersion: ambassador/v1
+kind: Module
+name: ambassador
+config:
+  service_port: 443
+  regex_max_size: 642
+---
+apiVersion: ambassador/v1
+kind: TLSContext
+name: tls
+hosts: ["localhost", "*.dev1"]
+cert_chain_file: /ambassador/ambassador-config/ssl/cert.pem
+private_key_file: /ambassador/ambassador-config/ssl/key.pem
+---
+apiVersion: ambassador/v1
+kind: Module
+name: tls
+config:
+  server:
+    enabled: true
+    redirect_cleartext_from: 80

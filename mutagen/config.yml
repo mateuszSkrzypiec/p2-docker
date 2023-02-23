@@ -1,0 +1,18 @@
+sync:
+  defaults:
+    ignore:
+      paths:
+        - .DS_Store
+        - .idea
+  p2MutagenConfiguration{project_name}:
+    alpha: "../p2"
+    beta: "docker://{project_name}_php/var/www/symfony/"
+    configurationBeta:
+      watch:
+        mode: "no-watch"
+    mode: "two-way-resolved"
+    permissions:
+      defaultFileMode: 666
+      defaultDirectoryMode: 777
+    symlink:
+      mode: "ignore"
