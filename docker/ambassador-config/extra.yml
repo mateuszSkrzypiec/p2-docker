@@ -2,7 +2,7 @@ apiVersion: ambassador/v1
 kind:  Mapping
 name:  react
 prefix: /
-service: react:3000
+service: react
 rewrite: ""
 timeout_ms: 0
 retry_policy:
@@ -12,7 +12,7 @@ retry_policy:
 apiVersion: ambassador/v1
 kind:  Mapping
 name:  p2_php
-prefix: ^\/api\/.*|^/rest_api.*|^//user.*|^//admin.*|^/javascript.*|^/stylesheets.*|^/order_document.*|^\/modules\/.*\.js.*|^\/product\/attachment.*|^\/product\/video\/.*|^/module/upgrade_all.*|^/public/.*|^/images/.*|^/rga/pdf/.*|^/payment.*|^/feed/generate/.*
+prefix: ^\/api\/.*|^/rest_api.*
 prefix_regex: true
 service: p2_php
 timeout_ms: 0

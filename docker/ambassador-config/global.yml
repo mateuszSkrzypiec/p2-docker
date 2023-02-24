@@ -9,7 +9,7 @@ config:
 apiVersion: ambassador/v1
 kind: TLSContext
 name: tls
-hosts: ["localhost", "*.dev1"]
+hosts: ["localhost", "*.dev_p2"]
 cert_chain_file: /ambassador/ambassador-config/ssl/cert.pem
 private_key_file: /ambassador/ambassador-config/ssl/key.pem
 ---

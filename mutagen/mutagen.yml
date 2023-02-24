@@ -4,9 +4,9 @@ sync:
       paths:
         - .DS_Store
         - .idea
-  p2MutagenConfiguration{project_name}:
+  p2MutagenConfiguration:
     alpha: "../p2"
-    beta: "docker://{project_name}_php/var/www/symfony/"
+    beta: "docker://p2_php/var/www/p2/"
     configurationBeta:
       watch:
         mode: "no-watch"

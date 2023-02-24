@@ -2,17 +2,19 @@ version: "3.9"
 
 services:
   database:
-    image: mysql:8.0
+    image: mysql:8.0-debian
     container_name: ${APP_NAME}_database
-    command:
-      - "sleep inf"
+    command: 'sh -c "while true; do sleep 360; done"'
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - 3300:3306
+      - "3300:3306"
+    volumes:
+      - database_volume:/var/lib/mysql
+    tty: true
   php:
     build:
       context: ./docker/php
@@ -20,18 +22,51 @@ services:
         TIMEZONE: ${TIMEZONE}
     container_name: ${APP_NAME}_php
     volumes:
-      - php_volume:/var/www/symfony/
+      - php_volume:/var/www/p2
     networks:
       - symfony_network
     depends_on:
       - database
   react:
+    command: 'sh -c "while true; do sleep 360; done"'
     build:
       context: ./docker/react
     container_name: ${APP_NAME}_react
     volumes:
-      - react_volume:/app/
+      - react_volume:/app
+    networks:
+      - symfony_network
+  nginx:
+    build:
+      context: ./docker/nginx
+      args:
+        TIMEZONE: ${TIMEZONE}
+    container_name: ${APP_NAME}_nginx
+    volumes:
+      - php_volume:/var/www/p2
+    ports:
+      - "8090:80"
     networks:
       - symfony_network
     depends_on:
-      - amb
+      - php
+  ambassador:
+    image: quay.io/datawire/ambassador:1.13.0
+    container_name: ${APP_NAME}_ambassador
+    platform: linux/amd64
+    volumes:
+      - ./docker/ambassador-config:/ambassador/ambassador-config
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - symfony_network
+    depends_on:
+      - php
+      - react
+volumes:
+  database_volume:
+  react_volume:
+  php_volume:
+networks:
+  symfony_network:
