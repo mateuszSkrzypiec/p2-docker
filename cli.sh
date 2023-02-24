@@ -11,9 +11,10 @@ if [ "$1" = "build" ]; then
     mkdir -p p2
     # shellcheck disable=SC2164
     cd p2
-    if [ -z "$(ls -A /path/to/dir)" ]; then
+    if [ -z "$(ls -A .)" ]; then
        git clone ${BACKEND_GITHUB_REPO} .
     fi
+    cd ..
     # shellcheck disable=SC2164
     cd ./mutagen
     rm -rf mutagen.yml.lock
