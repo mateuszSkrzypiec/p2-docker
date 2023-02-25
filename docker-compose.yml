@@ -1,20 +1,22 @@
-version: "3.9"
+version: "3.7"
 
 services:
   database:
-    image: mysql:8.0-debian
+    image: mysql:8.0
+    platform: linux/amd64
     container_name: ${APP_NAME}_database
-    command: 'sh -c "while true; do sleep 360; done"'
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "3300:3306"
+    command: ["--default-authentication-plugin=mysql_native_password"]
     volumes:
       - database_volume:/var/lib/mysql
-    tty: true
+      - ./docker/database/:/docker-entrypoint-initdb.d
+    ports:
+      - "3300:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${APP_NAME}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_HOST: "%"
   php:
     build:
       context: ./docker/php
@@ -23,8 +25,6 @@ services:
     container_name: ${APP_NAME}_php
     volumes:
       - php_volume:/var/www/p2
-    networks:
-      - symfony_network
     depends_on:
       - database
   react:
@@ -34,8 +34,6 @@ services:
     container_name: ${APP_NAME}_react
     volumes:
       - react_volume:/app
-    networks:
-      - symfony_network
   nginx:
     build:
       context: ./docker/nginx
@@ -46,8 +44,6 @@ services:
       - php_volume:/var/www/p2
     ports:
       - "8090:80"
-    networks:
-      - symfony_network
     depends_on:
       - php
   ambassador:
@@ -59,8 +55,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    networks:
-      - symfony_network
     depends_on:
       - php
       - react
@@ -68,5 +62,4 @@ volumes:
   database_volume:
   react_volume:
   php_volume:
-networks:
-  symfony_network:
+
