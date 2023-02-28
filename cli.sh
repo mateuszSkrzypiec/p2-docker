@@ -33,8 +33,12 @@ elif [ "$1" == 'start' ]; then
   mutagen project start
 elif [ "$1" == "enable:xdebug" ]; then
   echo "XDEBUG enabled"
+  docker exec -it p2_php bash -c "/var/configureXdebug.sh on"
+  docker restart p2_nginx
 elif [ "$1" == "disable:xdebug" ]; then
   echo "XDEBUG disabled"
+  docker exec -it p2_php bash -c "/var/configureXdebug.sh"
+  docker restart p2_nginx
 else
   echo 'Invalid argument'
 fi
