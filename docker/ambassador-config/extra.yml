@@ -14,7 +14,7 @@ kind:  Mapping
 name:  p2_php
 prefix: ^\/api\/.*|^/rest_api.*
 prefix_regex: true
-service: p2_php
+service: p2_nginx
 timeout_ms: 0
 rewrite: ""
 retry_policy:

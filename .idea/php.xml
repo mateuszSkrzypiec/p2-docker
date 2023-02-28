@@ -71,6 +71,7 @@
       <path value="$PROJECT_DIR$/p2/vendor/symfony/var-exporter" />
       <path value="$PROJECT_DIR$/p2/vendor/symfony/cache-contracts" />
       <path value="$PROJECT_DIR$/p2/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/p2/vendor/symfony/messenger" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
